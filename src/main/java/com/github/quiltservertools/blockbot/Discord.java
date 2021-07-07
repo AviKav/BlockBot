@@ -8,6 +8,7 @@ import club.minnced.discord.webhook.send.WebhookMessage;
 import club.minnced.discord.webhook.send.WebhookMessageBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.TextChannel;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.server.MinecraftServer;
@@ -32,6 +33,7 @@ public class Discord {
     private final String name;
     private final String logo;
     private final Status status;
+    private final TextChannel channel;
 
     public Discord(Config config, MinecraftServer server) throws LoginException {
         jda = JDABuilder.createDefault(config.getIdentifier()).build();
@@ -48,6 +50,7 @@ public class Discord {
         this.name = config.getName();
         this.logo = config.getLogo();
         this.status = new Status();
+        this.channel = jda.getTextChannelById(config.getChannel());
     }
 
     public void shutdown() {
@@ -73,9 +76,10 @@ public class Discord {
 //        builder.setAuthor(new WebhookEmbed.EmbedAuthor(player.getName().asString(), getAvatar(player.getUuidAsString()), null));
 //        builder.setDescription(left ? "Left the game" : "Joined the game");
 //        builder.setColor(left ? 14695980 : 3334259);
-        WebhookMessageBuilder builder = new WebhookMessageBuilder();
-        builder.setContent(player.getName().asString() + message);
-        webhook.send(builder.build());
+
+//        WebhookMessageBuilder builder = new WebhookMessageBuilder();
+//        builder.setContent(player.getName().asString() + message);
+        channel.sendMessage(player.getName().asString() + message).queue();
     }
 
     private String getAvatar(String UUID) {
@@ -99,9 +103,10 @@ public class Discord {
 //        builder.setAuthor(new WebhookEmbed.EmbedAuthor(this.name, this.logo, null));
 //        builder.setColor(start ? 3334259 : 14695980);
 //        builder.setDescription(message);
-        WebhookMessageBuilder builder = new WebhookMessageBuilder();
-        builder.setContent(message);
-        webhook.send(builder.build());
+
+//        WebhookMessageBuilder builder = new WebhookMessageBuilder();
+//        builder.setContent(message);
+        channel.sendMessage(message).queue();
     }
 
     public void sendDeathMessage(ServerPlayerEntity player, Text text) {
@@ -113,9 +118,10 @@ public class Discord {
 //        builder.setAuthor(new WebhookEmbed.EmbedAuthor(player.getName().asString(), getAvatar(player.getUuidAsString()), null));
 //        builder.setDescription(message);
 //        builder.setColor(15789375);
-        WebhookMessageBuilder builder = new WebhookMessageBuilder();
-        builder.setContent(message);
-        webhook.send(builder.build());
+
+//        WebhookMessageBuilder builder = new WebhookMessageBuilder();
+//        builder.setContent(message);
+        channel.sendMessage(message).queue();
     }
 
     public void sendAdvancementMessage(ServerPlayerEntity player, Advancement advancement) {
@@ -125,8 +131,9 @@ public class Discord {
 //        builder.setDescription(message);
 //        builder.setColor(16771646);
 //        builder.setAuthor(new WebhookEmbed.EmbedAuthor(player.getName().asString(), getAvatar(player.getUuidAsString()), null));
-        WebhookMessageBuilder builder = new WebhookMessageBuilder();
-        builder.setContent(message);
-        webhook.send(builder.build());
+
+//        WebhookMessageBuilder builder = new WebhookMessageBuilder();
+//        builder.setContent(message);
+        channel.sendMessage(message).queue();
     }
 }
