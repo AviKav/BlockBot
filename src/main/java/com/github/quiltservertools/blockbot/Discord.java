@@ -68,10 +68,13 @@ public class Discord {
     }
 
     public void joinLeaveToDiscord(boolean left, ServerPlayerEntity player) {
-        WebhookEmbedBuilder builder = new WebhookEmbedBuilder();
-        builder.setAuthor(new WebhookEmbed.EmbedAuthor(player.getName().asString(), getAvatar(player.getUuidAsString()), null));
-        builder.setDescription(left ? "Left the game" : "Joined the game");
-        builder.setColor(left ? 14695980 : 3334259);
+        String message = left ? " Left the game" : " Joined the game";
+//        WebhookEmbedBuilder builder = new WebhookEmbedBuilder();
+//        builder.setAuthor(new WebhookEmbed.EmbedAuthor(player.getName().asString(), getAvatar(player.getUuidAsString()), null));
+//        builder.setDescription(left ? "Left the game" : "Joined the game");
+//        builder.setColor(left ? 14695980 : 3334259);
+        WebhookMessageBuilder builder = new WebhookMessageBuilder();
+        builder.setContent(player.getName().asString() + message);
         webhook.send(builder.build());
     }
 
@@ -91,30 +94,39 @@ public class Discord {
 
     public void serverStatus(boolean start) {
         if (!BlockBot.CONFIG.sendStatusMessages()) return;
-        WebhookEmbedBuilder builder = new WebhookEmbedBuilder();
-        builder.setAuthor(new WebhookEmbed.EmbedAuthor(this.name, this.logo, null));
-        builder.setColor(start ? 3334259 : 14695980);
-        builder.setDescription(start ? "Server Started" : "Server Stopped");
+        String message = start ? "Server Started" : "Server Stopped";
+//        WebhookEmbedBuilder builder = new WebhookEmbedBuilder();
+//        builder.setAuthor(new WebhookEmbed.EmbedAuthor(this.name, this.logo, null));
+//        builder.setColor(start ? 3334259 : 14695980);
+//        builder.setDescription(message);
+        WebhookMessageBuilder builder = new WebhookMessageBuilder();
+        builder.setContent(message);
         webhook.send(builder.build());
     }
 
     public void sendDeathMessage(ServerPlayerEntity player, Text text) {
-        WebhookEmbedBuilder builder = new WebhookEmbedBuilder();
-        builder.setAuthor(new WebhookEmbed.EmbedAuthor(player.getName().asString(), getAvatar(player.getUuidAsString()), null));
         String message = text.getString();
-        message = message.replaceFirst(player.getName().asString() + " ", "");
-        message = StringUtils.capitalize(message);
-        builder.setDescription(message);
-        builder.setColor(15789375);
+//        message = message.replaceFirst(player.getName().asString() + " ", "");
+//        message = StringUtils.capitalize(message);
+
+//        WebhookEmbedBuilder builder = new WebhookEmbedBuilder();
+//        builder.setAuthor(new WebhookEmbed.EmbedAuthor(player.getName().asString(), getAvatar(player.getUuidAsString()), null));
+//        builder.setDescription(message);
+//        builder.setColor(15789375);
+        WebhookMessageBuilder builder = new WebhookMessageBuilder();
+        builder.setContent(message);
         webhook.send(builder.build());
     }
 
     public void sendAdvancementMessage(ServerPlayerEntity player, Advancement advancement) {
         if (!BlockBot.CONFIG.sendAdvancementMessages()) return;
-        WebhookEmbedBuilder builder = new WebhookEmbedBuilder();
-        builder.setDescription(player.getName().getString() + " has made the advancement [" + Objects.requireNonNull(advancement.getDisplay()).getTitle().getString() + "]");
-        builder.setColor(16771646);
-        builder.setAuthor(new WebhookEmbed.EmbedAuthor(player.getName().asString(), getAvatar(player.getUuidAsString()), null));
+        String message = player.getName().getString() + " has made the advancement [" + Objects.requireNonNull(advancement.getDisplay()).getTitle().getString() + "]";
+//        WebhookEmbedBuilder builder = new WebhookEmbedBuilder();
+//        builder.setDescription(message);
+//        builder.setColor(16771646);
+//        builder.setAuthor(new WebhookEmbed.EmbedAuthor(player.getName().asString(), getAvatar(player.getUuidAsString()), null));
+        WebhookMessageBuilder builder = new WebhookMessageBuilder();
+        builder.setContent(message);
         webhook.send(builder.build());
     }
 }
