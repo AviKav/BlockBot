@@ -36,6 +36,7 @@ public class Discord {
     private final TextChannel channel;
 
     public Discord(Config config, MinecraftServer server) throws LoginException {
+        TextChannel channel1;
         jda = JDABuilder.createDefault(config.getIdentifier()).build();
         jda.addEventListener(new Listeners(config, server));
         BlockBot.LOG.info("Setup discord bot with token provided");
@@ -50,7 +51,15 @@ public class Discord {
         this.name = config.getName();
         this.logo = config.getLogo();
         this.status = new Status();
-        this.channel = jda.getTextChannelById(config.getChannel());
+        try {
+            channel1 = jda.awaitStatus(JDA.Status.CONNECTED)
+                    .getTextChannelById(config.getChannel());
+        } catch (InterruptedException e) {
+            channel1 = null;
+            e.printStackTrace();
+        }
+
+        this.channel = channel1;
     }
 
     public void shutdown() {
